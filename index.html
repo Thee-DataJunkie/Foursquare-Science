@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FourSquare — UTME Mock Examination</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080d1a;
+    --surface: #0f1729;
+    --surface2: #162035;
+    --surface3: #1d2a42;
+    --border: rgba(99,160,255,0.12);
+    --border-bright: rgba(99,160,255,0.35);
+    --blue: #3b82f6;
+    --blue-bright: #60a5fa;
+    --cyan: #22d3ee;
+    --gold: #f59e0b;
+    --red: #ef4444;
+    --green: #22c55e;
+    --text: #e2eaf7;
+    --text-dim: #7a90b5;
+    --text-faint: #3d5070;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content:'';
+    position:fixed;
+    top:-30%;
+    left:-10%;
+    width:60%;
+    height:60%;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.07) 0%, transparent 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ── SETUP SCREEN ── */
+  #setupScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .brand-icon {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #3b82f6, #22d3ee);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 0 24px rgba(59,130,246,0.4);
+  }
+
+  .brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .brand-name span { color: var(--blue-bright); }
+
+  .setup-card {
+    width: 100%;
+    max-width: 600px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--shadow), 0 0 60px rgba(59,130,246,0.06);
+  }
+
+  .setup-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+
+  .setup-title span { color: var(--blue-bright); }
+
+  .setup-sub {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--blue-bright);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::before {
+    content:'';
+    width: 3px;
+    height: 14px;
+    background: var(--blue);
+    border-radius: 2px;
+  }
+
+  .name-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color .2s;
+    margin-bottom: 30px;
+  }
+
+  .name-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+  .name-input::placeholder { color: var(--text-faint); }
+
+  .english-pill {
+    background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(34,211,238,0.1));
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .english-pill-left { display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
+  .compulsory-badge {
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .subject-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all .2s;
+  }
+
+  .subject-btn:hover { border-color: var(--blue); color: var(--text); }
+
+  .subject-btn.selected {
+    background: rgba(59,130,246,0.12);
+    border-color: var(--blue);
+    color: var(--text);
+  }
+
+  .subject-btn .check {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid var(--text-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: all .2s;
+  }
+
+  .subject-btn.selected .check {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  .selection-count {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .selection-count span { color: var(--blue-bright); font-weight: 600; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue-bright);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .rules-box {
+    background: rgba(245,158,11,0.07);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c9a84c;
+    margin-bottom: 28px;
+  }
+
+  .rules-box strong { color: var(--gold); font-weight: 600; }
+
+  .begin-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    border: none;
+    border-radius: var(--radius);
+    padding: 16px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all .25s;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+  }
+
+  .begin-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(59,130,246,0.45); }
+  .begin-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  /* ── EXAM SCREEN ── */
+  #examScreen { display: none; min-height: 100vh; flex-direction: column; }
+
+  .exam-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .header-brand span { color: var(--blue-bright); }
+
+  .candidate-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .candidate-pill span { color: var(--blue-bright); }
+
+  .timer-display {
+    background: linear-gradient(135deg, #1a2540, #1e2d4a);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--blue-bright);
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .timer-display.warning { color: var(--gold); border-color: rgba(245,158,11,0.4); }
+  .timer-display.danger { color: var(--red); border-color: rgba(239,68,68,0.4); animation: pulse 1s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+
+  .exam-body {
+    display: flex;
+    flex: 1;
+  }
+
+  .exam-main {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+  }
+
+  .subject-tabs {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+    overflow-x: auto;
+  }
+
+  .subject-tab {
+    padding: 14px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .subject-tab .tab-count { font-size: 11px; font-weight: 400; color: var(--text-faint); }
+  .subject-tab.active { color: var(--blue-bright); border-bottom-color: var(--blue); }
+  .subject-tab:hover:not(.active) { color: var(--text); }
+
+  .question-area {
+    padding: 28px 32px;
+    max-width: 900px;
+  }
+
+  .question-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .q-number {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .q-number strong { color: var(--text); font-weight: 600; }
+
+  .flag-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .flag-btn:hover, .flag-btn.flagged {
+    background: rgba(245,158,11,0.1);
+    border-color: rgba(245,158,11,0.4);
+    color: var(--gold);
+  }
+
+  .question-text {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .options-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .option-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .option-item:hover { border-color: var(--blue-bright); background: rgba(59,130,246,0.06); }
+
+  .option-item.selected {
+    background: rgba(59,130,246,0.12);
+    border-color: var(--blue);
+  }
+
+  .option-letter {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all .2s;
+  }
+
+  .option-item.selected .option-letter {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  .option-text { font-size: 15px; line-height: 1.5; }
+
+  .exam-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .nav-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 22px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-btn:hover { border-color: var(--blue); color: var(--blue-bright); }
+  .nav-btn:disabled { opacity:.3; cursor: not-allowed; }
+
+  .submit-btn-exam {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 26px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .submit-btn-exam:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(239,68,68,0.35); }
+
+  /* sidebar */
+  .exam-sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sidebar-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .progress-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .progress-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .progress-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue-bright);
+  }
+
+  .progress-val.gold { color: var(--gold); }
+  .progress-label { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
+  .navigator-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .nav-dot {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: all .15s;
+    font-weight: 500;
+  }
+
+  .nav-dot:hover { border-color: var(--blue); color: var(--text); }
+  .nav-dot.current { border-color: var(--blue); background: rgba(59,130,246,0.2); color: var(--blue-bright); }
+  .nav-dot.answered { background: rgba(59,130,246,0.25); border-color: var(--blue); color: var(--blue-bright); }
+  .nav-dot.flagged-dot { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); color: var(--gold); }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .l-answered { background: rgba(59,130,246,0.5); border: 1px solid var(--blue); }
+  .l-flagged { background: rgba(245,158,11,0.3); border: 1px solid rgba(245,158,11,0.5); }
+  .l-unanswered { background: var(--surface2); border: 1px solid var(--border); }
+
+  .sidebar-submit {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .sidebar-submit:hover { box-shadow: 0 4px 16px rgba(239,68,68,0.35); }
+
+  /* ── RESULTS SCREEN ── */
+  #resultsScreen {
+    display: none;
+    min-height: 100vh;
+    padding: 40px 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .results-card {
+    width: 100%;
+    max-width: 900px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .results-header {
+    background: linear-gradient(135deg, #0f1f3d, #162035);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .results-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .results-name {
+    color: var(--blue-bright);
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .score-circle {
+    text-align: center;
+  }
+
+  .score-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--blue-bright), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .score-total {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .results-body { padding: 32px 40px; }
+
+  .subject-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .subject-result-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .sr-subject {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .sr-score {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--blue-bright);
+  }
+
+  .sr-total { font-size: 13px; color: var(--text-faint); margin-top: 2px; }
+
+  .sr-bar-wrap {
+    height: 4px;
+    background: var(--surface3);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .sr-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    transition: width .8s ease;
+  }
+
+  .corrections-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .subject-corrections {
+    margin-bottom: 28px;
+  }
+
+  .corrections-subject-header {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--blue-bright);
+    text-transform: uppercase;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .correction-item {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    border-left: 3px solid transparent;
+  }
+
+  .correction-item.correct { border-left-color: var(--green); }
+  .correction-item.wrong { border-left-color: var(--red); }
+
+  .ci-q {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .ci-answers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .ci-your {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .ci-correct {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #86efac;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .ci-unanswered {
+    background: rgba(100,116,139,0.15);
+    border: 1px solid rgba(100,116,139,0.3);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .retake-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 32px auto 0;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .25s;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+  }
+
+  .retake-btn:hover { transform: translateY(-2px); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .modal-icon { font-size: 42px; margin-bottom: 16px; }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .modal-body { color: var(--text-dim); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+
+  .modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+  .modal-cancel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 24px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .modal-confirm {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .exam-sidebar { display: none; }
+    .question-area { padding: 20px 16px; }
+    .exam-nav { padding: 16px; }
+    .results-header { flex-direction: column; align-items: flex-start; }
+    .results-body { padding: 20px; }
+  }
+
+  .fade-in { animation: fadeIn .4s ease both; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: none; } }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setupScreen">
+  <div class="brand">
+    <div class="brand-icon">📚</div>
+    <div class="brand-name">Four<span>Square</span> JAMB Centre</div>
+  </div>
+
+  <div class="setup-card fade-in">
+    <div class="setup-title">UTME <span>Mock Examination</span></div>
+    <p class="setup-sub">Enter your details and select your subject combination to begin your timed practice exam.</p>
+
+    <div class="section-label">Candidate Information</div>
+    <input type="text" class="name-input" id="candidateName" placeholder="Enter your full name eg: John Obi" />
+
+    <div class="section-label">Subject Combination</div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:14px;">Select <strong style="color:var(--text)">3 subjects</strong> below. Use of English is compulsory for all candidates.</p>
+
+    <div class="english-pill">
+      <div class="english-pill-left">📖 Use of English</div>
+      <span class="compulsory-badge">Compulsory</span>
+    </div>
+
+    <div class="subjects-grid" id="subjectsGrid">
+      <button class="subject-btn" data-subject="Mathematics" onclick="toggleSubject(this)">
+        Mathematics <span class="check"></span>
+      </button>
+      <button class="subject-btn" data-subject="Physics" onclick="toggleSubject(this)">
+        Physics <span class="check"></span>
+      </button>
+      <button class="subject-btn" data-subject="Chemistry" onclick="toggleSubject(this)">
+        Chemistry <span class="check"></span>
+      </button>
+      <button class="subject-btn" data-subject="Biology" onclick="toggleSubject(this)">
+        Biology <span class="check"></span>
+      </button>
+    </div>
+
+    <p class="selection-count">Selected: <span id="selectedCount">0</span>/3 optional subjects</p>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-val" id="statQ">60</div>
+        <div class="stat-label">Questions</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">120</div>
+        <div class="stat-label">Minutes</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statM">160</div>
+        <div class="stat-label">Total Marks</div>
+      </div>
+    </div>
+
+    <div class="rules-box">
+      ⚡ <strong>EXAM RULES</strong><br>
+      120-minute countdown. Exam auto-submits when time expires. English includes 10 questions on <em>The Lekki Headmaster</em> by Kabir Alabi Garba (2026 JAMB text). Results are recorded by your instructor. Good luck!
+    </div>
+
+    <button class="begin-btn" id="beginBtn" onclick="beginExam()" disabled>▶ Begin Examination</button>
+  </div>
+</div>
+
+<!-- EXAM SCREEN -->
+<div id="examScreen">
+  <header class="exam-header">
+    <div class="header-brand">Edu<span>Prep</span> CBT</div>
+    <div class="candidate-pill">Candidate: <span id="headerName">—</span></div>
+    <div class="timer-display" id="timerDisplay">02:00:00</div>
+  </header>
+
+  <div class="exam-body">
+    <div class="exam-main">
+      <div class="subject-tabs" id="subjectTabs"></div>
+      <div class="question-area" id="questionArea"></div>
+      <div class="exam-nav">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Prev</button>
+        <button class="submit-btn-exam" onclick="confirmSubmit()">⬛ Submit Exam</button>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+      </div>
+    </div>
+
+    <aside class="exam-sidebar">
+      <div>
+        <div class="sidebar-section-title">Progress</div>
+        <div class="progress-grid">
+          <div class="progress-stat">
+            <div class="progress-val" id="sideAnswered">0</div>
+            <div class="progress-label">Answered</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-val" id="sideRemaining">180</div>
+            <div class="progress-label">Remaining</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-val gold" id="sideFlagged">0</div>
+            <div class="progress-label">Flagged</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-val" id="sideTotal">180</div>
+            <div class="progress-label">Total</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="navigator-label" id="navLabel">Navigator — English</div>
+        <div class="nav-grid" id="navGrid"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot l-answered"></div> Answered</div>
+          <div class="legend-item"><div class="legend-dot l-flagged"></div> Flagged</div>
+          <div class="legend-item"><div class="legend-dot l-unanswered"></div> Unanswered</div>
+        </div>
+      </div>
+
+      <button class="sidebar-submit" onclick="confirmSubmit()">⬛ Submit Exam</button>
+    </aside>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="resultsScreen" style="display:none;">
+  <div class="results-card fade-in">
+    <div class="results-header">
+      <div>
+        <div class="results-title">Examination Results</div>
+        <div class="results-name" id="resultsName"></div>
+      </div>
+      <div class="score-circle">
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="score-total" id="scoreTotal">out of 0</div>
+      </div>
+    </div>
+
+    <div class="results-body">
+      <div class="subject-results-grid" id="subjectResultsGrid"></div>
+
+      <div class="corrections-title">📝 Detailed Corrections</div>
+      <div id="correctionsArea"></div>
+
+      <button class="retake-btn" onclick="retake()">↺ Retake Exam</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="modal-overlay" id="submitModal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Submit Examination?</div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Continue Exam</button>
+      <button class="modal-confirm" onclick="submitExam()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  QUESTION BANK
+// ══════════════════════════════════════════
+const QUESTION_BANK = {
+
+"English": [
+  // Grammar & Usage
+  {q:"'The pen is mightier than the sword' is an example of:", opts:["Simile","Oxymoron","Metaphor","Irony"], ans:2},
+  {q:"Choose the option that is nearest in meaning to the word ERUDITE:", opts:["Ignorant","Scholarly","Arrogant","Timid"], ans:1},
+  {q:"In the sentence 'The committee has reached its decision', the subject is:", opts:["committee","has","decision","its"], ans:0},
+  {q:"Which of these sentences is grammatically correct?", opts:["Neither John nor his brothers is coming","Neither John nor his brothers are coming","Neither John nor his brothers have came","Neither John nor his brothers was coming"], ans:1},
+  {q:"The word LACONIC means:", opts:["Verbose","Brief and to the point","Loudly spoken","Ambiguous"], ans:1},
+  {q:"Select the option that best fills the gap: The minister, together with his aides, ___ expected at the airport.", opts:["are","were","is","have been"], ans:2},
+  {q:"Which of the following is an example of a gerund?", opts:["Running fast","He runs fast","The running water","She runs daily"], ans:2},
+  {q:"ANTONYM of EPHEMERAL:", opts:["Transient","Permanent","Brief","Fleeting"], ans:1},
+  {q:"The figure of speech in 'The trees whispered secrets' is:", opts:["Hyperbole","Personification","Simile","Alliteration"], ans:1},
+  {q:"Choose the correctly punctuated sentence:", opts:["Its a dogs life.","It's a dog's life.","Its a dog's life.","It's a dogs life."], ans:1},
+  {q:"In 'She is the apple of my eye', the expression means:", opts:["She eats apples daily","She is very dear to me","She has an eye problem","She is a farmer"], ans:1},
+  {q:"Select the option with the correct use of the apostrophe:", opts:["The boy's books are new","The boys book's are new","The boys' book are new","The boy's book's are new"], ans:0},
+  {q:"Which sentence uses the subjunctive mood correctly?", opts:["If I was you, I would leave","If I were you, I would leave","If I are you, I would leave","If I be you, I would leave"], ans:1},
+  {q:"The word MAGNANIMOUS means:", opts:["Very small","Very tall","Generous and forgiving","Easily angered"], ans:2},
+  {q:"Choose the correct completion: She insisted that he ___ the meeting on time.", opts:["attends","attended","attend","has attended"], ans:2},
+  {q:"A MALAPROPISM is:", opts:["A figure of speech using irony","The misuse of a word in place of a similar-sounding one","An exaggerated statement","A comparison using 'like' or 'as'"], ans:1},
+  {q:"Identify the passive voice: ", opts:["The dog bit the man","The man was bitten by the dog","The man bit the dog","The dog has bitten the man"], ans:1},
+  {q:"SYNONYM of AMELIORATE:", opts:["Worsen","Improve","Confuse","Delay"], ans:1},
+  {q:"The underlined word in 'He speaks with an affected accent' means:", opts:["Natural","Genuine","Artificial","Loud"], ans:2},
+  {q:"Choose the option that best explains 'a swan song':", opts:["A beautiful song about swans","The last performance or act before death or retirement","A type of classical music","A song sung at sunrise"], ans:1},
+  {q:"Select the option that correctly fills the gap: ___ of the two candidates is qualified.", opts:["Both","None","Neither","Each"], ans:2},
+  {q:"An ELEGY is:", opts:["A humorous poem","A poem of mourning","A poem celebrating victory","A very short poem"], ans:1},
+  {q:"The tone of a piece of writing refers to:", opts:["The subject matter","The writer's attitude toward the subject","The length of the work","The literary devices used"], ans:1},
+  {q:"Which of these is a concrete noun?", opts:["Love","Freedom","Chair","Courage"], ans:2},
+  {q:"In 'The early bird catches the worm', the literary device used is:", opts:["Proverb","Personification","Metaphor","Euphemism"], ans:0},
+  {q:"ANTONYM of VERBOSE:", opts:["Talkative","Concise","Eloquent","Explicit"], ans:1},
+  {q:"Select the option with the correct use of WHOSE:", opts:["Whose bag is this?","Who's bag is this?","Whose is the bag this?","Who's bag this is?"], ans:0},
+  {q:"A PARADOX is a statement that:", opts:["Is obviously false","Seems contradictory but reveals a truth","Is always true","Exaggerates the truth"], ans:1},
+  {q:"Choose the word that is correctly spelt:", opts:["Accomodation","Accommodation","Acommodation","Accommodaton"], ans:1},
+  {q:"The term IN MEDIAS RES means:", opts:["In the middle of things","At the beginning","At the end","Behind the scenes"], ans:0},
+  {q:"The figure of speech in 'He is as brave as a lion' is:", opts:["Metaphor","Simile","Hyperbole","Irony"], ans:1},
+  {q:"Select the option that best fills the gap: The data ___ been compiled.", opts:["has","have","is","are"], ans:0},
+  {q:"An ANACHRONISM is:", opts:["A new word","Something placed in the wrong time period","A type of rhyme","A grammatical error"], ans:1},
+  {q:"The word PERFIDIOUS means:", opts:["Loyal","Treacherous","Courageous","Humble"], ans:1},
+  {q:"Choose the correctly spelt word:", opts:["Neccessary","Necesary","Necessary","Neccesary"], ans:2},
+  {q:"Which is an example of synecdoche?", opts:["The wind howled","Lend me your ears","He is a lion in battle","The whole town was asleep"], ans:1},
+  {q:"SYNONYM of OBSEQUIOUS:", opts:["Arrogant","Servile","Rebellious","Distant"], ans:1},
+  {q:"Select the option that correctly fills the gap: He was accused of ___ the funds.", opts:["misappropriate","misappropriated","misappropriating","misappropriates"], ans:2},
+  {q:"In literature, CATHARSIS refers to:", opts:["The climax of a play","The emotional release experienced by an audience","A character's turning point","The resolution of a conflict"], ans:1},
+  {q:"Choose the option nearest in meaning to GARRULOUS:", opts:["Silent","Unfriendly","Very talkative","Reserved"], ans:2},
+  {q:"Which sentence is correct?", opts:["I have less friends than him","I have fewer friends than he does","I have fewer friends than him do","I have less friend than he"], ans:1},
+  {q:"A SOLILOQUY is:", opts:["A conversation between two characters","A speech made alone expressing thoughts","A type of chorus","A dramatic climax"], ans:1},
+  {q:"ANTONYM of VINDICTIVE:", opts:["Forgiving","Revengeful","Cruel","Spiteful"], ans:0},
+  {q:"The word OSTENTATIOUS means:", opts:["Shy and reserved","Making a showy display","Very humble","Secretive"], ans:1},
+  {q:"Identify the correct sentence:", opts:["Between you and I, it is true","Between you and me, it is true","Between you and myself, it is true","Between I and you, it is true"], ans:1},
+  {q:"An ALLEGORY is:", opts:["A short witty saying","A story with a hidden moral or political meaning","A type of rhyme scheme","A metaphor for death"], ans:1},
+  {q:"SYNONYM of PERNICIOUS:", opts:["Harmless","Beneficial","Highly harmful","Amusing"], ans:2},
+  {q:"Choose the correctly spelt word:", opts:["Embarassment","Embarrassment","Embarassement","Embarrasment"], ans:1},
+  {q:"Which sentence uses a dangling modifier?", opts:["Walking down the street, she saw an accident","Walking down the street, an accident was seen by her","She saw an accident while walking down the street","While she walked down the street, she saw an accident"], ans:1},
+  {q:"The word LOQUACIOUS means:", opts:["Quiet","Intelligent","Very talkative","Sneaky"], ans:2},
+  // Lekki Headmaster Questions
+  {q:"In 'The Lekki Headmaster', who is the author?", opts:["Chinua Achebe","Wole Soyinka","Kabir Alabi Garba","Chimamanda Adichie"], ans:2},
+  {q:"The Lekki Headmaster is set primarily in:", opts:["Northern Nigeria","Lagos, specifically the Lekki area","Abuja","Oyo State"], ans:1},
+  {q:"What is the central theme of The Lekki Headmaster?", opts:["War and conflict","Education, leadership, and moral integrity","Love and marriage","Migration to the city"], ans:1},
+  {q:"The headmaster in the novel is best described as:", opts:["Corrupt and ineffective","A principled, dedicated educator","An ambitious politician","A religious extremist"], ans:1},
+  {q:"Which social issue does The Lekki Headmaster primarily explore?", opts:["The Nigerian civil war","Decay in the public education system and ethical leadership","Gender discrimination","Environmental pollution"], ans:1},
+  {q:"The character of the headmaster in the novel represents:", opts:["Corruption and greed","The ideal of selfless public service","Military dictatorship","Colonial influence"], ans:1},
+  {q:"What narrative technique is predominantly used in The Lekki Headmaster?", opts:["Stream of consciousness","Third-person omniscient narration","First-person retrospective","Epistolary format"], ans:1},
+  {q:"The conflict between the headmaster and the school board in the novel symbolises:", opts:["Personal jealousy","The clash between institutional corruption and individual integrity","A generational misunderstanding","Religious differences"], ans:1},
+  {q:"How does the headmaster respond to pressure to compromise his standards?", opts:["He immediately yields to authority","He resigns quietly","He resists firmly and stands by his principles","He seeks political patronage"], ans:2},
+  {q:"The setting of Lekki in the novel serves to:", opts:["Highlight rural Nigerian life","Contrast elite coastal life with grassroots educational struggles","Celebrate Lagos tourism","Explore Lagos nightlife"], ans:1},
+],
+
+"Mathematics": [
+  {q:"If 2^x = 32, find x.", opts:["4","5","6","3"], ans:1},
+  {q:"Evaluate log₁₀(1000).", opts:["2","3","4","10"], ans:1},
+  {q:"Find the sum of the first 10 terms of an AP: 3, 7, 11, ...", opts:["192","210","195","212"], ans:1},
+  {q:"If p = 2 and q = −3, evaluate 3p² − 2q.", opts:["18","12","6","18"], ans:0},
+  {q:"The gradient of the line joining (2, 5) and (4, 11) is:", opts:["2","3","4","5"], ans:1},
+  {q:"Solve: 3x − 5 = 10", opts:["5","3","4","6"], ans:0},
+  {q:"Find the value of √(144 + 25).", opts:["15","13","12","14"], ans:1},
+  {q:"A triangle has angles in ratio 1:2:3. Find the smallest angle.", opts:["30°","60°","45°","20°"], ans:0},
+  {q:"If the area of a circle is 154 cm², find its radius. (π = 22/7)", opts:["7 cm","14 cm","21 cm","3.5 cm"], ans:0},
+  {q:"Simplify: (x² − 9) / (x − 3)", opts:["x − 3","x + 3","x + 9","x − 9"], ans:1},
+  {q:"The 5th term of a GP with first term 3 and common ratio 2 is:", opts:["48","32","96","24"], ans:0},
+  {q:"If sin θ = 3/5, find cos θ (θ is acute).", opts:["4/5","3/4","5/4","2/5"], ans:0},
+  {q:"Find the derivative of f(x) = 4x³ − 2x + 7.", opts:["12x² + 2","12x² − 2","4x² − 2","12x³ − 2"], ans:1},
+  {q:"Evaluate ∫(2x + 3)dx from 0 to 2.", opts:["10","8","12","6"], ans:0},
+  {q:"Two fair dice are thrown. What is the probability of obtaining a sum of 7?", opts:["1/6","5/36","1/9","7/36"], ans:0},
+  {q:"Resolve into partial fractions: (5x + 1) / (x² − 1)", opts:["3/(x−1) + 2/(x+1)","2/(x−1) + 3/(x+1)","3/(x+1) + 2/(x−1)","1/(x−1) + 4/(x+1)"], ans:0},
+  {q:"Find the quadratic equation whose roots are 3 and −5.", opts:["x² + 2x − 15 = 0","x² − 2x − 15 = 0","x² + 2x + 15 = 0","x² − 2x + 15 = 0"], ans:0},
+  {q:"The volume of a sphere of radius 3 cm is (π = 22/7):", opts:["113.14 cm³","88 cm³","125.14 cm³","95 cm³"], ans:0},
+  {q:"Solve the inequality: 2x − 3 < 7", opts:["x < 5","x < 4","x > 5","x > 4"], ans:0},
+  {q:"If matrices A = [[1,2],[3,4]] and B = [[0,1],[2,3]], find A + B.", opts:["[[1,3],[5,7]]","[[1,3],[5,8]]","[[0,2],[6,7]]","[[2,3],[5,7]]"], ans:0},
+  {q:"Find the value of tan 45°.", opts:["0","1","√3","√2"], ans:1},
+  {q:"A man invests ₦50,000 at 8% per annum simple interest. What is the interest after 3 years?", opts:["₦12,000","₦10,000","₦15,000","₦8,000"], ans:0},
+  {q:"Evaluate 5! / 3!.", opts:["20","60","24","10"], ans:0},
+  {q:"The locus of points equidistant from two fixed points is:", opts:["A circle","The perpendicular bisector of the line joining them","A straight line parallel to the line joining them","An ellipse"], ans:1},
+  {q:"If y = 3x² + 5x − 2, find dy/dx at x = 1.", opts:["11","8","13","10"], ans:0},
+  {q:"Two numbers are in ratio 3:5. If their sum is 80, find the larger number.", opts:["50","30","45","35"], ans:0},
+  {q:"The perimeter of a rectangle is 36 cm and its length is 10 cm. Find its area.", opts:["80 cm²","60 cm²","70 cm²","90 cm²"], ans:0},
+  {q:"Evaluate ²⁰C₂.", opts:["190","380","210","160"], ans:0},
+  {q:"Solve 2^(x+1) = 16.", opts:["3","4","2","5"], ans:0},
+  {q:"If the midpoint of PQ is (3, 4) and P = (1, 2), find Q.", opts:["(5, 6)","(4, 5)","(3, 6)","(6, 5)"], ans:0},
+  {q:"Find the equation of a line with gradient 2 passing through (1, 3).", opts:["y = 2x + 1","y = 2x − 1","y = x + 2","y = x + 3"], ans:0},
+  {q:"Evaluate log₂(64).", opts:["6","7","5","8"], ans:0},
+  {q:"If f(x) = x² + 3x − 4, find f(−1).", opts:["−6","−4","0","6"], ans:0},
+  {q:"What is the mode of: 3, 5, 7, 5, 9, 5, 3, 7?", opts:["5","3","7","9"], ans:0},
+  {q:"Find the range of: 12, 7, 19, 4, 15, 8.", opts:["15","12","11","14"], ans:0},
+  {q:"Solve simultaneously: x + y = 7 and x − y = 3.", opts:["x=5, y=2","x=4, y=3","x=6, y=1","x=3, y=4"], ans:0},
+  {q:"The angle subtended at the centre by an arc is 60°. If the radius is 12 cm, find the length of the arc. (π = 22/7)", opts:["12.57 cm","12.76 cm","11.57 cm","13.76 cm"], ans:0},
+  {q:"If the variance of a set of numbers is 16, what is the standard deviation?", opts:["4","8","2","16"], ans:0},
+  {q:"Find the sum of interior angles of a hexagon.", opts:["720°","540°","900°","660°"], ans:0},
+  {q:"Evaluate (3 × 10⁴) + (2 × 10³).", opts:["32000","23000","32100","30200"], ans:0},
+],
+
+"Biology": [
+  {q:"Which organelle is known as the powerhouse of the cell?", opts:["Nucleus","Mitochondria","Ribosome","Golgi apparatus"], ans:1},
+  {q:"The process by which plants make food using sunlight is called:", opts:["Respiration","Photosynthesis","Transpiration","Fermentation"], ans:1},
+  {q:"DNA is found mainly in the:", opts:["Cytoplasm","Mitochondria","Nucleus","Ribosome"], ans:2},
+  {q:"Which blood group is the universal donor?", opts:["A","B","AB","O"], ans:3},
+  {q:"The basic unit of life is:", opts:["Tissue","Cell","Organ","Organism"], ans:1},
+  {q:"Osmosis is the movement of water molecules from a region of:", opts:["High solute concentration to low solute concentration","Low water concentration to high water concentration","High water concentration to low water concentration","High temperature to low temperature"], ans:2},
+  {q:"Which gas is produced during photosynthesis?", opts:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"], ans:2},
+  {q:"The Rh factor in blood is associated with:", opts:["Red blood cells","White blood cells","Platelets","Plasma"], ans:0},
+  {q:"Meiosis occurs in:", opts:["Liver cells","Skin cells","Reproductive organs","Brain cells"], ans:2},
+  {q:"Which of the following is NOT a function of the liver?", opts:["Detoxification","Bile production","Insulin production","Glycogen storage"], ans:2},
+  {q:"The scientific name of humans is:", opts:["Homo erectus","Homo habilis","Homo sapiens","Homo neanderthalensis"], ans:2},
+  {q:"Which enzyme breaks down starch into maltose?", opts:["Pepsin","Amylase","Lipase","Trypsin"], ans:1},
+  {q:"Haemoglobin is found in:", opts:["White blood cells","Platelets","Red blood cells","Plasma"], ans:2},
+  {q:"The process of converting glucose to pyruvate is called:", opts:["Krebs cycle","Glycolysis","Oxidative phosphorylation","Electron transport"], ans:1},
+  {q:"Which kingdom includes fungi?", opts:["Plantae","Protista","Monera","Fungi"], ans:3},
+  {q:"Active transport differs from passive transport in that it:", opts:["Does not require energy","Requires ATP","Moves substances down a concentration gradient","Occurs only in animal cells"], ans:1},
+  {q:"The hormone responsible for regulating blood glucose is:", opts:["Adrenaline","Glucagon","Insulin","Thyroxine"], ans:2},
+  {q:"Chromosomes are made up of:", opts:["RNA and protein","DNA and protein","DNA and carbohydrate","RNA and lipid"], ans:1},
+  {q:"The process by which organisms maintain a stable internal environment is:", opts:["Osmoregulation","Homeostasis","Thermoregulation","Excretion"], ans:1},
+  {q:"Transpiration in plants occurs mainly through:", opts:["Roots","Lenticels","Stomata","Bark"], ans:2},
+  {q:"Which part of the brain controls balance and coordination?", opts:["Cerebrum","Medulla oblongata","Hypothalamus","Cerebellum"], ans:3},
+  {q:"A gene is a segment of:", opts:["Protein","RNA","DNA","Lipid"], ans:2},
+  {q:"The Hardy-Weinberg principle relates to:", opts:["Evolution of species","Allele frequencies in a population","Cell division","Genetic mutation"], ans:1},
+  {q:"In a food chain, green plants are:", opts:["Primary consumers","Secondary consumers","Producers","Decomposers"], ans:2},
+  {q:"Which vitamin is produced by the skin upon exposure to sunlight?", opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"], ans:3},
+  {q:"The process of breaking down dead organic matter is called:", opts:["Photosynthesis","Decomposition","Fermentation","Transpiration"], ans:1},
+  {q:"Antibodies are produced by:", opts:["Red blood cells","T-lymphocytes","B-lymphocytes","Platelets"], ans:2},
+  {q:"The site of protein synthesis in a cell is the:", opts:["Nucleus","Ribosome","Golgi body","Lysosome"], ans:1},
+  {q:"Which of the following is a vector of malaria?", opts:["Culex mosquito","Anopheles mosquito","Aedes mosquito","Tsetse fly"], ans:1},
+  {q:"Mendel's law of segregation states that:", opts:["Genes on different chromosomes assort independently","Each organism carries two alleles which separate during gamete formation","Dominant traits always mask recessive traits","Offspring resemble parents"], ans:1},
+  {q:"The structure that controls entry and exit of substances in the cell is:", opts:["Cell wall","Cell membrane","Nucleus","Vacuole"], ans:1},
+  {q:"Root nodules containing nitrogen-fixing bacteria are found in:", opts:["Grasses","Legumes","Ferns","Mosses"], ans:1},
+  {q:"The carrying capacity of an ecosystem is:", opts:["The total number of species","The maximum population size the environment can sustain","The total area of the ecosystem","The total energy available"], ans:1},
+  {q:"Which type of reproduction does NOT require a mate?", opts:["Sexual reproduction","Fertilisation","Asexual reproduction","Meiosis"], ans:2},
+  {q:"The trachea is part of the ___ system.", opts:["Digestive","Circulatory","Respiratory","Excretory"], ans:2},
+  {q:"Which of the following is an example of mutualism?", opts:["Tapeworm in human intestine","Clownfish and sea anemone","Lion eating a zebra","Cuckoo laying eggs in another bird's nest"], ans:1},
+  {q:"The part of the kidney that filters blood is the:", opts:["Loop of Henle","Bowman's capsule","Collecting duct","Renal pelvis"], ans:1},
+  {q:"Chlorophyll is mainly found in the:", opts:["Vacuole","Cell wall","Chloroplast","Nucleus"], ans:2},
+  {q:"Sickle cell anaemia is caused by:", opts:["A viral infection","A mutation in haemoglobin gene","Iron deficiency","Bacterial infection"], ans:1},
+  {q:"Which gas do animals release during cellular respiration?", opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"], ans:2},
+],
+
+"Chemistry": [
+  {q:"The atomic number of Carbon is:", opts:["6","12","8","14"], ans:0},
+  {q:"What is the chemical formula of water?", opts:["HO","H₂O₂","H₂O","OH₂"], ans:2},
+  {q:"Which of the following is a noble gas?", opts:["Fluorine","Chlorine","Neon","Nitrogen"], ans:2},
+  {q:"The pH of a neutral solution is:", opts:["0","7","14","1"], ans:1},
+  {q:"Rusting of iron is an example of:", opts:["Reduction","Oxidation","Neutralisation","Precipitation"], ans:1},
+  {q:"The process of obtaining pure water from seawater is called:", opts:["Filtration","Evaporation","Distillation","Crystallisation"], ans:2},
+  {q:"Which of these is an isotope of hydrogen?", opts:["Helium","Deuterium","Lithium","Beryllium"], ans:1},
+  {q:"The molar mass of NaCl is:", opts:["23 g/mol","35.5 g/mol","58.5 g/mol","29 g/mol"], ans:2},
+  {q:"Avogadro's number is approximately:", opts:["6.02 × 10²³","6.02 × 10²²","3.01 × 10²³","1.02 × 10²³"], ans:0},
+  {q:"Which of the following is the strongest acid?", opts:["Acetic acid","Sulphuric acid","Carbonic acid","Citric acid"], ans:1},
+  {q:"The process by which a liquid changes to gas at any temperature is:", opts:["Boiling","Condensation","Evaporation","Sublimation"], ans:2},
+  {q:"In the Periodic Table, elements in the same group have the same:", opts:["Atomic mass","Number of protons","Number of valence electrons","Melting point"], ans:2},
+  {q:"Which gas is produced when zinc reacts with hydrochloric acid?", opts:["Oxygen","Chlorine","Hydrogen","Carbon dioxide"], ans:2},
+  {q:"The bond in NaCl is:", opts:["Covalent","Ionic","Metallic","Hydrogen"], ans:1},
+  {q:"Which of the following is NOT a property of metals?", opts:["Good conductors of heat","Malleable","Brittle","Lustrous"], ans:2},
+  {q:"Electrolysis of dilute H₂SO₄ produces ___ at the cathode:", opts:["Oxygen","Hydrogen","Sulphur","Water"], ans:1},
+  {q:"The law of conservation of mass states that:", opts:["Mass can be created in a reaction","Mass can be destroyed in a reaction","Mass is conserved in a chemical reaction","Mass increases in exothermic reactions"], ans:2},
+  {q:"An exothermic reaction is one that:", opts:["Absorbs heat","Releases heat","Has no energy change","Only occurs at high temperature"], ans:1},
+  {q:"Which of these is a homogeneous mixture?", opts:["Sand and water","Oil and water","Salt solution","Chalk and water"], ans:2},
+  {q:"The electron configuration of Sodium (Na, Z=11) is:", opts:["2,8","2,8,1","2,8,2","2,9"], ans:1},
+  {q:"A catalyst in a chemical reaction:", opts:["Is consumed by the reaction","Increases the activation energy","Speeds up the reaction without being consumed","Changes the products of the reaction"], ans:2},
+  {q:"The IUPAC name of CH₃CH₂OH is:", opts:["Methanol","Ethanol","Propanol","Butanol"], ans:1},
+  {q:"Which of the following is a reducing agent in the reaction between Fe₂O₃ and CO?", opts:["Fe₂O₃","CO","Fe","CO₂"], ans:1},
+  {q:"The number of moles in 9g of water is:", opts:["0.25 mol","0.5 mol","1 mol","2 mol"], ans:1},
+  {q:"Hess's Law is related to:", opts:["Rate of reaction","Enthalpy change","Equilibrium constant","Electrode potential"], ans:1},
+  {q:"Alkanes are characterised by:", opts:["A triple bond","A double bond","Only single bonds","An aromatic ring"], ans:2},
+  {q:"The indicator that turns red in acid and blue in base is:", opts:["Phenolphthalein","Universal indicator","Litmus","Methyl orange"], ans:2},
+  {q:"Limestone (CaCO₃) decomposes on heating to give:", opts:["CaO + H₂O","CaO + CO₂","Ca + CO₂ + O","Ca(OH)₂ + CO₂"], ans:1},
+  {q:"Which of the following undergoes sublimation?", opts:["Water","Iodine","Sodium chloride","Copper"], ans:1},
+  {q:"The charge of a proton is:", opts:["-1","+1","0","+2"], ans:1},
+  {q:"In a redox reaction, oxidation involves:", opts:["Gain of electrons","Loss of electrons","Gain of protons","Loss of protons"], ans:1},
+  {q:"Which of the following is NOT a colligative property?", opts:["Boiling point elevation","Freezing point depression","Osmotic pressure","Colour of solution"], ans:3},
+  {q:"The functional group of carboxylic acids is:", opts:["-OH","-COOH","-CHO","-CO-"], ans:1},
+  {q:"When dissolved in water, an acid increases the concentration of:", opts:["OH⁻ ions","H⁺ ions","Na⁺ ions","Cl⁻ ions"], ans:1},
+  {q:"The number of electrons in a neutral atom of Chlorine (Z=17) is:", opts:["17","18","16","35"], ans:0},
+  {q:"Which gas turns limewater milky?", opts:["Oxygen","Hydrogen","Carbon dioxide","Nitrogen"], ans:2},
+  {q:"The process of separating two miscible liquids by heating is:", opts:["Decantation","Fractional distillation","Crystallisation","Filtration"], ans:1},
+  {q:"At STP, one mole of an ideal gas occupies:", opts:["11.2 L","22.4 L","44.8 L","5.6 L"], ans:1},
+  {q:"The reagent used to test for starch is:", opts:["Fehling's solution","Benedict's solution","Iodine solution","Biuret reagent"], ans:2},
+  {q:"An amphoteric oxide is one that reacts with:", opts:["Only acids","Only bases","Both acids and bases","Neither acids nor bases"], ans:2},
+],
+
+"Physics": [
+  {q:"The SI unit of force is:", opts:["Joule","Pascal","Newton","Watt"], ans:2},
+  {q:"The speed of light in a vacuum is approximately:", opts:["3 × 10⁶ m/s","3 × 10⁸ m/s","3 × 10¹⁰ m/s","3 × 10⁴ m/s"], ans:1},
+  {q:"Newton's second law of motion states that:", opts:["Every action has an equal and opposite reaction","A body at rest remains at rest unless acted upon by a force","Force equals mass times acceleration","Momentum is always conserved"], ans:2},
+  {q:"The energy stored in a stretched spring is:", opts:["Kinetic energy","Chemical energy","Elastic potential energy","Thermal energy"], ans:2},
+  {q:"Which of the following is a scalar quantity?", opts:["Velocity","Force","Acceleration","Speed"], ans:3},
+  {q:"The formula for pressure is:", opts:["P = mv","P = F/A","P = W/t","P = mgh"], ans:1},
+  {q:"The frequency of a wave with period 0.02 s is:", opts:["50 Hz","20 Hz","2 Hz","200 Hz"], ans:0},
+  {q:"Ohm's law states that current is:", opts:["Directly proportional to resistance at constant voltage","Directly proportional to voltage at constant resistance","Inversely proportional to voltage at constant resistance","Independent of voltage"], ans:1},
+  {q:"The principle of conservation of energy states that:", opts:["Energy cannot exist in different forms","Energy is created in nuclear reactions","Energy can neither be created nor destroyed","Potential energy equals kinetic energy at all points"], ans:2},
+  {q:"A body is in equilibrium when the net force acting on it is:", opts:["Maximum","Minimum","Zero","Negative"], ans:2},
+  {q:"The phenomenon of light bending when it passes from one medium to another is:", opts:["Reflection","Diffraction","Refraction","Interference"], ans:2},
+  {q:"Which of the following is NOT a form of electromagnetic radiation?", opts:["X-rays","Microwaves","Sound waves","Gamma rays"], ans:2},
+  {q:"The work done by a force of 20N over a distance of 5m is:", opts:["4 J","100 J","25 J","15 J"], ans:1},
+  {q:"The half-life of a radioactive element is the time taken for:", opts:["All atoms to decay","Half the atoms to decay","The radiation to double","The mass to double"], ans:1},
+  {q:"A concave lens is used to correct:", opts:["Long-sightedness","Astigmatism","Short-sightedness","Colour blindness"], ans:2},
+  {q:"The unit of electrical resistance is:", opts:["Ampere","Volt","Ohm","Coulomb"], ans:2},
+  {q:"Archimedes' principle states that a body immersed in a fluid experiences an upthrust equal to:", opts:["Its weight","The weight of fluid displaced","The volume of fluid displaced","The density of the fluid"], ans:1},
+  {q:"Electromagnetic induction was discovered by:", opts:["Newton","Einstein","Faraday","Maxwell"], ans:2},
+  {q:"The acceleration due to gravity on Earth's surface is approximately:", opts:["9.8 m/s","9.8 m/s²","10 m/s","8.9 m/s²"], ans:1},
+  {q:"Which type of wave requires a medium for propagation?", opts:["Electromagnetic waves","Light waves","Sound waves","Radio waves"], ans:2},
+  {q:"Power is defined as:", opts:["Force × distance","Work / time","Mass × velocity","Force × velocity"], ans:1},
+  {q:"The process by which heat is transferred through a vacuum is:", opts:["Conduction","Convection","Radiation","Diffusion"], ans:2},
+  {q:"Which of the following particles has no charge?", opts:["Proton","Electron","Neutron","Alpha particle"], ans:2},
+  {q:"The image formed by a plane mirror is:", opts:["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans:1},
+  {q:"Boyle's law states that at constant temperature, the pressure of a gas is ___ proportional to its volume.", opts:["Directly","Inversely","Not","Exponentially"], ans:1},
+  {q:"The unit of power is:", opts:["Joule","Newton","Watt","Pascal"], ans:2},
+  {q:"Radioactive decay that emits helium nuclei is:", opts:["Beta decay","Gamma decay","Alpha decay","X-ray emission"], ans:2},
+  {q:"The critical angle for total internal reflection depends on:", opts:["Frequency of light only","Speed of light only","Refractive index of the media","Wavelength only"], ans:2},
+  {q:"A transformer steps up voltage by a factor of 10. If the primary has 50 turns, the secondary has:", opts:["5 turns","500 turns","50 turns","100 turns"], ans:1},
+  {q:"Coulomb's law describes the force between:", opts:["Magnetic poles","Gravitational masses","Electric charges","Moving charges"], ans:2},
+  {q:"The terminal velocity of a falling body is reached when:", opts:["Gravity becomes zero","Air resistance equals gravitational force","Speed is maximum","Mass is minimum"], ans:1},
+  {q:"A wave with frequency 5 Hz and wavelength 2 m has a speed of:", opts:["2.5 m/s","10 m/s","7 m/s","3 m/s"], ans:1},
+  {q:"In a series circuit, the total resistance is:", opts:["Less than the smallest resistance","Equal to the largest resistance","The sum of individual resistances","The average of individual resistances"], ans:2},
+  {q:"The Doppler effect refers to the change in ___ due to relative motion between source and observer.", opts:["Amplitude","Frequency","Speed","Wavelength and frequency"], ans:3},
+  {q:"The coefficient of friction between two surfaces is:", opts:["Always greater than 1","The ratio of frictional force to normal force","Equal to the angle of inclination","Independent of the contact surfaces"], ans:1},
+  {q:"Isotopes of an element have:", opts:["Same mass number, different atomic number","Same atomic number, different mass number","Same number of neutrons","Different chemical properties"], ans:1},
+  {q:"The electric field intensity at a point is defined as the force experienced per unit ___ charge.", opts:["Negative","Positive","Zero","Moving"], ans:1},
+  {q:"Which of the following best describes a black body?", opts:["A body that is always black in colour","A perfect absorber and emitter of radiation","A body with zero temperature","A body that reflects all radiation"], ans:1},
+  {q:"Simple harmonic motion occurs when the restoring force is:", opts:["Constant","Proportional to displacement","Maximum at equilibrium","Zero at maximum displacement"], ans:1},
+  {q:"The moment of a force is calculated as:", opts:["Force + distance","Force × perpendicular distance from pivot","Force / distance","Force × mass"], ans:1},
+]
+};
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let candidateName = "";
+let selectedSubjects = [];
+let allSubjects = []; // ordered list including English
+let questions = {}; // subject -> shuffled question array
+let answers = {};   // subject -> { qIndex: optIndex }
+let flagged = {};   // subject -> Set of qIndexes
+let currentSubject = "";
+let currentQ = 0;
+let timerInterval = null;
+let timeLeft = 7200; // 2 hours in seconds
+
+const SUBJECT_QUESTIONS = { "English": 60, "Mathematics": 40, "Physics": 40, "Chemistry": 40, "Biology": 40 };
+
+// ──────────────────────────────────────────
+function toggleSubject(btn) {
+  const sub = btn.dataset.subject;
+  if (btn.classList.contains('selected')) {
+    btn.classList.remove('selected');
+    btn.querySelector('.check').textContent = '';
+    selectedSubjects = selectedSubjects.filter(s => s !== sub);
+  } else {
+    if (selectedSubjects.length >= 3) return;
+    btn.classList.add('selected');
+    btn.querySelector('.check').textContent = '✓';
+    selectedSubjects.push(sub);
+  }
+  const cnt = selectedSubjects.length;
+  document.getElementById('selectedCount').textContent = cnt;
+  const total = 60 + cnt * 40;
+  document.getElementById('statQ').textContent = 60 + cnt * 40;
+  document.getElementById('statM').textContent = (60 + cnt * 40) * (400 / 180) | 0;
+
+  const nameVal = document.getElementById('candidateName').value.trim();
+  document.getElementById('beginBtn').disabled = !(nameVal && cnt === 3);
+}
+
+document.getElementById('candidateName').addEventListener('input', function() {
+  const cnt = selectedSubjects.length;
+  document.getElementById('beginBtn').disabled = !(this.value.trim() && cnt === 3);
+});
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function beginExam() {
+  candidateName = document.getElementById('candidateName').value.trim();
+  if (!candidateName || selectedSubjects.length !== 3) return;
+
+  allSubjects = ["English", ...selectedSubjects];
+
+  // prepare questions
+  allSubjects.forEach(sub => {
+    const pool = QUESTION_BANK[sub] || [];
+    const count = SUBJECT_QUESTIONS[sub];
+    questions[sub] = pool.slice(0, count);
+    answers[sub] = {};
+    flagged[sub] = new Set();
+  });
+
+  document.getElementById('setupScreen').style.display = 'none';
+  const es = document.getElementById('examScreen');
+  es.style.display = 'flex';
+
+  document.getElementById('headerName').textContent = candidateName;
+
+  // build tabs
+  const tabsEl = document.getElementById('subjectTabs');
+  tabsEl.innerHTML = '';
+  allSubjects.forEach((sub, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'subject-tab' + (i === 0 ? ' active' : '');
+    tab.dataset.subject = sub;
+    tab.innerHTML = `${sub}<span class="tab-count">0/${SUBJECT_QUESTIONS[sub]}</span>`;
+    tab.onclick = () => switchSubject(sub);
+    tabsEl.appendChild(tab);
+  });
+
+  currentSubject = "English";
+  currentQ = 0;
+  renderQuestion();
+  updateSidebar();
+  startTimer();
+}
+
+function switchSubject(sub) {
+  currentSubject = sub;
+  currentQ = 0;
+  document.querySelectorAll('.subject-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.subject === sub);
+  });
+  renderQuestion();
+  updateSidebar();
+}
+
+function renderQuestion() {
+  const qs = questions[currentSubject];
+  const q = qs[currentQ];
+  const area = document.getElementById('questionArea');
+
+  area.innerHTML = `
+    <div class="question-meta">
+      <div class="q-number">Question <strong>${currentQ + 1}</strong> of ${qs.length}</div>
+      <button class="flag-btn ${flagged[currentSubject].has(currentQ) ? 'flagged' : ''}" onclick="toggleFlag()">
+        ⚑ ${flagged[currentSubject].has(currentQ) ? 'Flagged' : 'Flag'}
+      </button>
+    </div>
+    <div class="question-text">${q.q}</div>
+    <div class="options-list">
+      ${q.opts.map((opt, i) => `
+        <div class="option-item ${answers[currentSubject][currentQ] === i ? 'selected' : ''}" onclick="selectAnswer(${i})">
+          <div class="option-letter">${String.fromCharCode(65+i)}</div>
+          <div class="option-text">${opt}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('prevBtn').disabled = currentQ === 0 && allSubjects.indexOf(currentSubject) === 0;
+  document.getElementById('nextBtn').disabled = currentQ === qs.length - 1 && allSubjects.indexOf(currentSubject) === allSubjects.length - 1;
+
+  updateNavGrid();
+}
+
+function selectAnswer(optIdx) {
+  answers[currentSubject][currentQ] = optIdx;
+  renderQuestion();
+  updateSidebar();
+  updateTabCounts();
+}
+
+function toggleFlag() {
+  if (flagged[currentSubject].has(currentQ)) {
+    flagged[currentSubject].delete(currentQ);
+  } else {
+    flagged[currentSubject].add(currentQ);
+  }
+  renderQuestion();
+  updateSidebar();
+}
+
+function navigate(dir) {
+  const qs = questions[currentSubject];
+  const subIdx = allSubjects.indexOf(currentSubject);
+  const newQ = currentQ + dir;
+
+  if (newQ >= 0 && newQ < qs.length) {
+    currentQ = newQ;
+  } else if (dir > 0 && subIdx < allSubjects.length - 1) {
+    currentSubject = allSubjects[subIdx + 1];
+    currentQ = 0;
+    document.querySelectorAll('.subject-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.subject === currentSubject);
+    });
+    updateSidebar();
+  } else if (dir < 0 && subIdx > 0) {
+    currentSubject = allSubjects[subIdx - 1];
+    currentQ = questions[currentSubject].length - 1;
+    document.querySelectorAll('.subject-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.subject === currentSubject);
+    });
+    updateSidebar();
+  }
+  renderQuestion();
+}
+
+function updateNavGrid() {
+  const grid = document.getElementById('navGrid');
+  const qs = questions[currentSubject];
+  grid.innerHTML = '';
+  qs.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot';
+    if (i === currentQ) dot.classList.add('current');
+    else if (answers[currentSubject][i] !== undefined) dot.classList.add('answered');
+    if (flagged[currentSubject].has(i)) dot.classList.add('flagged-dot');
+    dot.textContent = i + 1;
+    dot.onclick = () => { currentQ = i; renderQuestion(); };
+    grid.appendChild(dot);
+  });
+  document.getElementById('navLabel').textContent = `Navigator — ${currentSubject}`;
+}
+
+function updateSidebar() {
+  let totalAnswered = 0, totalFlagged = 0, totalQ = 0;
+  allSubjects.forEach(sub => {
+    totalAnswered += Object.keys(answers[sub]).length;
+    totalFlagged += flagged[sub].size;
+    totalQ += questions[sub].length;
+  });
+  document.getElementById('sideAnswered').textContent = totalAnswered;
+  document.getElementById('sideRemaining').textContent = totalQ - totalAnswered;
+  document.getElementById('sideFlagged').textContent = totalFlagged;
+  document.getElementById('sideTotal').textContent = totalQ;
+  updateNavGrid();
+}
+
+function updateTabCounts() {
+  document.querySelectorAll('.subject-tab').forEach(t => {
+    const sub = t.dataset.subject;
+    const cnt = Object.keys(answers[sub]).length;
+    const total = SUBJECT_QUESTIONS[sub];
+    t.querySelector('.tab-count').textContent = `${cnt}/${total}`;
+  });
+}
+
+// ── TIMER ──
+function startTimer() {
+  timeLeft = 7200;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitExam(true);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const h = Math.floor(timeLeft / 3600);
+  const m = Math.floor((timeLeft % 3600) / 60);
+  const s = timeLeft % 60;
+  const str = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const el = document.getElementById('timerDisplay');
+  el.textContent = str;
+  el.className = 'timer-display';
+  if (timeLeft <= 600) el.classList.add('danger');
+  else if (timeLeft <= 1800) el.classList.add('warning');
+}
+
+// ── SUBMIT ──
+function confirmSubmit() {
+  let unanswered = 0;
+  allSubjects.forEach(sub => {
+    unanswered += questions[sub].length - Object.keys(answers[sub]).length;
+  });
+  document.getElementById('modalBody').innerHTML = `
+    You have <strong>${unanswered} unanswered question(s)</strong> remaining.<br>
+    Are you sure you want to submit? This action cannot be undone.
+  `;
+  document.getElementById('submitModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('submitModal').classList.remove('active');
+}
+
+function submitExam(autoSubmit = false) {
+  clearInterval(timerInterval);
+  closeModal();
+
+  // calculate scores
+  let grandTotal = 0, grandMax = 0;
+  const subjectResults = {};
+
+  allSubjects.forEach(sub => {
+    let score = 0;
+    const qs = questions[sub];
+    qs.forEach((q, i) => {
+      if (answers[sub][i] === q.ans) score++;
+    });
+    subjectResults[sub] = { score, total: qs.length };
+    grandTotal += score;
+    grandMax += qs.length;
+  });
+
+  // show results
+  document.getElementById('examScreen').style.display = 'none';
+  const rs = document.getElementById('resultsScreen');
+  rs.style.display = 'flex';
+
+  document.getElementById('resultsName').textContent = candidateName;
+  document.getElementById('scoreBig').textContent = grandTotal;
+  document.getElementById('scoreTotal').textContent = `out of ${grandMax}`;
+
+  // subject cards
+  const grid = document.getElementById('subjectResultsGrid');
+  grid.innerHTML = '';
+  allSubjects.forEach(sub => {
+    const { score, total } = subjectResults[sub];
+    const pct = Math.round(score / total * 100);
+    grid.innerHTML += `
+      <div class="subject-result-card">
+        <div class="sr-subject">${sub}</div>
+        <div class="sr-score">${score}</div>
+        <div class="sr-total">out of ${total} (${pct}%)</div>
+        <div class="sr-bar-wrap"><div class="sr-bar" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  });
+
+  // corrections
+  const corrArea = document.getElementById('correctionsArea');
+  corrArea.innerHTML = '';
+  allSubjects.forEach(sub => {
+    const qs = questions[sub];
+    let html = `<div class="subject-corrections">
+      <div class="corrections-subject-header">${sub}</div>`;
+    qs.forEach((q, i) => {
+      const userAns = answers[sub][i];
+      const correct = q.ans;
+      const isCorrect = userAns === correct;
+      if (isCorrect) return; // only show wrong/unanswered
+      html += `<div class="correction-item ${isCorrect ? 'correct' : 'wrong'}">
+        <div class="ci-q"><strong>${i+1}.</strong> ${q.q}</div>
+        <div class="ci-answers">`;
+      if (userAns !== undefined) {
+        html += `<span class="ci-your">✗ Your answer: ${q.opts[userAns]}</span>`;
+      } else {
+        html += `<span class="ci-unanswered">Not answered</span>`;
+      }
+      html += `<span class="ci-correct">✓ Correct: ${q.opts[correct]}</span>
+        </div></div>`;
+    });
+    html += '</div>';
+    corrArea.innerHTML += html;
+  });
+}
+
+function retake() {
+  location.reload();
+}
+</script>
+</body>
+</html>
